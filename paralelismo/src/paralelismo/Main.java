@@ -46,7 +46,7 @@ public class Main {
 		for (int i = 0; i < num_hilos; i++) {
 			
 			Slave slave = new Slave(i, particiones, readFile, results);
-			slave.run();
+			slave.start();
 		}
 		ini = System.currentTimeMillis() - ini;
 		System.out.println("Time: " + ini);
