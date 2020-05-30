@@ -36,7 +36,7 @@ public class Reader {
 		}
 	}
 	
-	public synchronized void readFile(int start, int end) {
+	public void readFile(int start, int end) {
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(this.fileneame))) {
 		    String line;
@@ -45,9 +45,25 @@ public class Reader {
 		    	if(cont >= start && cont < end){
 		    		String[] values = line.split(";");
 			        this.data.add(Arrays.asList(values));
-			        cont++;
 		    	}
 		        cont++;
+		    }
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void readFile() {
+		
+		try (BufferedReader br = new BufferedReader(new FileReader(this.fileneame))) {
+		    String line;
+		    while ((line = br.readLine()) != null) {
+		    	String[] values = line.split(";");
+			    this.data.add(Arrays.asList(values));
 		    }
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

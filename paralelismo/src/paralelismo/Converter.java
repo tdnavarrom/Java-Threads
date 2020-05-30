@@ -18,7 +18,6 @@ public class Converter {
         	
             List<Float> pos = new ArrayList<>();
 
-
             pos.add(Float.parseFloat(data.get(i).get(0))); //fecha
             pos.add(Float.parseFloat(data.get(i).get(1))); //hora
             pos.add(Float.parseFloat(data.get(i).get(2))); //precio_apertura
