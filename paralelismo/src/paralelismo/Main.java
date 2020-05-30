@@ -38,8 +38,7 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 		Results results = new Results();
-		Reader readFile = new Reader("DAT_ASCII_EURUSD_M1_2017_2019.csv");
-		
+		Reader readFile = new Reader("D:\\EAFIT\\CompOrg\\projects\\Final\\Paralelism\\DAT_ASCII_EURUSD_M1_2017_2019.csv");
 		System.out.println("Press 1 to run secuencial, press 2 to run directly with threads, press 3 to run with master thread and slave threads: ");
 		Scanner in = new Scanner(System.in); 
 	    int option = in.nextInt(); 
@@ -55,6 +54,8 @@ public class Main {
 			Converter converter = new Converter(dataString);
 			converter.convertToFloat();
 			List<List<Float>> data = converter.getList();
+			
+			System.out.print(data.size());
 
 			Evaluator evaluator = new Evaluator(data);
 
@@ -72,17 +73,16 @@ public class Main {
 			int num_hilos = 20;
 			int particiones = contador / num_hilos;
 			int restantes = 0;
-
-			for (int i = 0; i < num_hilos; i++) {
+			
+			Slave slave = new Slave(0, particiones, readFile, results, restantes);
+			for (int i = 1; i < num_hilos; i++) {
 				
 				if(i == num_hilos-1) restantes = contador % num_hilos;
 				
-				Slave slave = new Slave(i, particiones, readFile, results, restantes);
+				slave = new Slave(i, particiones, readFile, results, restantes);
 				slave.start();
-				slave.join();
 			}
-			
-			
+			slave.join();
 			ini = System.currentTimeMillis() - ini;
 	    }
 	    else if(option == 3){
@@ -90,11 +90,6 @@ public class Main {
 	    }
 		
 		System.out.println("Time: " + ini);
-		//System.out.println(contador);
-
 		printResult(results.getResults());
-		
-		
-
 	}
 }
