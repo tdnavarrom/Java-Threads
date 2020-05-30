@@ -1,32 +1,34 @@
+package paralelismo;
 
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Reader {
-	private String fileneame = null;
+	private String filename = null;
 	private List<List<String>> data = new ArrayList<>();
-	private int contador = 0;
 	
 	public Reader(String filename) {
-		this.fileneame = filename;
-		countLines();
+		this.filename = filename;
 	}
 	
-	public void countLines() {
-		try (BufferedReader br = new BufferedReader(new FileReader(this.fileneame))) {
-		    int cont = 0;
+	public int countNumLines() {
+		int cont = 0;
+		try (BufferedReader br = new BufferedReader(new FileReader(this.filename))) {
 		    String line;
 		    while ((line = br.readLine()) != null) {
-		       cont++;
+		    	cont++;
 		    }
-		    this.contador = cont;
+		    
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -34,19 +36,21 @@ public class Reader {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return cont;
 	}
 	
 	public void readFile(int start, int end) {
 		
-		try (BufferedReader br = new BufferedReader(new FileReader(this.fileneame))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(this.filename))) {
 		    String line;
-		    int cont = 0;
-		    while ((line = br.readLine()) != null) {
-		    	if(cont >= start && cont < end){
-		    		String[] values = line.split(";");
-			        this.data.add(Arrays.asList(values));
+		    
+		    for(int i = 0; i < end; i++) {
+		    	line = br.readLine();
+		    	if(i >= start && i < end && line != null){
+		    			String[] values = line.split(";");
+				        this.data.add(Arrays.asList(values));
 		    	}
-		        cont++;
 		    }
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -59,7 +63,7 @@ public class Reader {
 	
 	public void readFile() {
 		
-		try (BufferedReader br = new BufferedReader(new FileReader(this.fileneame))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(this.filename))) {
 		    String line;
 		    while ((line = br.readLine()) != null) {
 		    	String[] values = line.split(";");
@@ -76,10 +80,6 @@ public class Reader {
 	
 	public List<List<String>> getData() {
 		return this.data;
-	}
-	
-	public int getContador() {
-		return this.contador;
 	}
 	
 }

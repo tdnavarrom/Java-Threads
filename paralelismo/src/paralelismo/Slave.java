@@ -1,3 +1,5 @@
+package paralelismo;
+
 import java.util.List;
 
 public class Slave extends Thread{

@@ -1,4 +1,6 @@
+package paralelismo;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -36,7 +38,7 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 		Results results = new Results();
-		Reader readFile = new Reader("C:\\Users\\tomas\\eclipse-workspace\\ProjectoFinal\\src\\DAT_ASCII_EURUSD_M1_2017_2019.csv");
+		Reader readFile = new Reader("DAT_ASCII_EURUSD_M1_2017_2019.csv");
 		
 		System.out.println("Press 1 to run secuencial, press 2 to run directly with threads, press 3 to run with master thread and slave threads: ");
 		Scanner in = new Scanner(System.in); 
@@ -66,8 +68,8 @@ public class Main {
 	    	
 	    }
 	    else if(option == 2) {
-	    	int contador = readFile.getContador();
-			int num_hilos = 200;
+	    	int contador = readFile.countNumLines();
+			int num_hilos = 20;
 			int particiones = contador / num_hilos;
 			int restantes = 0;
 
