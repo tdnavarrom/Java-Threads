@@ -1,24 +1,14 @@
 import java.util.ArrayList;
 
 public class Results {
-	private List<List<Float>> resultsMax = new ArrayList<>();
-	private List<List<Float>> resultsMin = new ArrayList<>();
-	
-	
-	public synchronized void updateMax(List<Float> maxResultList) {
-		this.resultsMax.add(maxResultList);
+	float[][] results = new float[2][4];
+
+	public synchronized void updateMax(int row, int col, float value) {
+		this.results[row][col] = value;
 	}
-	
-	public synchronized void updateMin(List<Float> minResultList) {
-		this.resultsMin.add(minResultList);
+
+	public float[][] getResults(){
+		return results;
 	}
-	
-	public void getMax() {
-		return this.resultsMax;
-	}
-	
-	public void getMin() {
-		return this.resultsMin;
-	}
-	
+
 }

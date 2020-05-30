@@ -1,4 +1,4 @@
-package paralelismo;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,7 +12,7 @@ import java.util.List;
 public class Reader {
 	private String fileneame = null;
 	private List<List<String>> data = new ArrayList<>();
-	private int contador = null;
+	private int contador = 0;
 	
 	public Reader(String filename) {
 		this.fileneame = filename;
@@ -22,6 +22,7 @@ public class Reader {
 	public void countLines() {
 		try (BufferedReader br = new BufferedReader(new FileReader(this.fileneame))) {
 		    int cont = 0;
+		    String line;
 		    while ((line = br.readLine()) != null) {
 		       cont++;
 		    }
