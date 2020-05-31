@@ -1,4 +1,3 @@
-package paralelismo;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;

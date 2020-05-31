@@ -1,32 +1,36 @@
-public class Minions extends Threads{
+import java.util.List;
+
+public class Minions extends Thread{
     
-    private List<List<String>> data;
+    private List<List<String>> Stringdata;
 	private Results results;
 
-	public Minions( Results results, List<List<String>> data) {
+	public Minions( Results results, List<List<String>> Stringdata) {
 		this.results = results;
-		this.data = data;
+		this.Stringdata = Stringdata;
 	}
 
 	public void run() {
 
-		// System.out.println(temp_cont * particiones);
-		// System.out.println(temp_end_of_range);
+		
 
-		System.out.println("Thread " + Thread.currentThread().getId() + " is running");
+		//System.out.println("Thread " + Thread.currentThread().getId() + " is running");
 
-		Converter converter = new Converter(data);
+		Converter converter = new Converter(Stringdata);
 		converter.convertToFloat();
 		List<List<Float>> data = converter.getList();
+
 
 		Evaluator evaluator = new Evaluator(data);
 
 		float[][] temp_precios = evaluator.ComparatorPrecio();
 
+
+		
 		for (int j = 0; j < 4; j++) {
-			results.updateMax(0, j, temp_precios[0][j]);
-			results.updateMax(1, j, temp_precios[1][j]);
+			results.update(0, j, temp_precios[0][j]);
+			results.update(1, j, temp_precios[1][j]);
 		}
-		System.out.println("Thread " + Thread.currentThread().getId() + " is finished");
+		//System.out.println("Thread " + Thread.currentThread().getId() + " is finished");
 	}
 }

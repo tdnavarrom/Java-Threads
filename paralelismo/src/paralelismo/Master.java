@@ -1,49 +1,69 @@
+import java.util.List;
+import java.util.ArrayList;
+
+
 public class Master extends Thread {
 
-    private ReadFile readfile;
-    private Result results;
-    private int contador = 0;
+    private Reader readfile;
+    private Results results;
     private int num_hilos = 0;
-    private int particiones = 0;
-    private int restantes = 0;
-
-    public Master(ReadFile readfile, Result results, int contador, int num_hilos, int particiones) {
+    
+    public Master(Reader readfile, Results results, int num_hilos) {
         this.readfile = readfile;
         this.results = results;
-        this.contador = contador;
         this.num_hilos = num_hilos;
-        this.particiones = particiones;
     }
 
-    public void run() {
+    public void run(){
 
-        readFile.readFile();
-        List<List<String>> dataString = readFile.getData();
+        readfile.readFile();
+        int contador = readfile.getContador();
+        int particiones = contador/num_hilos;
+        int restantes = 0;
+        
+        List<List<String>> dataString = readfile.getData();
+        
+        List<List<String>> temp_data = dataString.subList(0,particiones);
 
-        Minions minions = new Minions(i, particiones, results, restantes);
+        Minions minions = new Minions(results, temp_data);
 
-        for (int i = 1; i < num_hilos; i++) {
+        for (int i = 0; i < num_hilos; i++) {
 
-            System.out.println("NEGRO MK");
             int temp_end_of_range = (i + 1) * particiones;
             
-            if (i == num_hilos - 1)
-                restantes = contador % num_hilos;
+            if( i == num_hilos-1) restantes = contador % num_hilos;
+            
+            if(restantes != 0) {
+    			temp_end_of_range = ((i + 1) * particiones) + restantes;
+    			
+    			//Sleep thread 32 to guarantee it is the last thread to join the main thread.
+    			try {
+    				Thread.currentThread().sleep(2500);  //Do not use 1600ms by testing, 1500 is the perfect value.
+    			}
+    			catch (Exception e) {
+    				System.out.println(e);
+    			}
+    			
+    		}
+            
+            temp_data = new ArrayList<>();
+            int start = i * particiones;
+            
 
-            if (restantes != 0) temp_end_of_range = ((i + 1) * particiones) + restantes;
-
-            List<List<String>> temp_data;
-
-            for(int j = i*particiones; j < temp_end_of_range; ++j){
-                temp_data.add(dataString.get(j));
-            }
-
-
-            minions = new Minions(temp_data, results);
+          
+            temp_data.addAll(dataString.subList(start,temp_end_of_range));
+            
+            
+            minions = new Minions(results, temp_data);
             minions.start();
         
         }
-        minions.join();
+        try {
+			minions.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
     }
 }
