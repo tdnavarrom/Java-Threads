@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Reader {
 	private String filename = null;
-	private List<List<Float>> data = new ArrayList<>();
+	private List<float[]> data = new ArrayList<>();
 	private int contador = 0;
 
 	public Reader(String filename) {
@@ -54,8 +54,7 @@ public class Reader {
 					for(int j =0; j < values.length; j++ ){
 						floatData[j] = Float.parseFloat(values[j]);
 					}
-
-					this.data.add(Arrays.asList(floatData));
+					this.data.add(floatData);
 				}
 			}
 

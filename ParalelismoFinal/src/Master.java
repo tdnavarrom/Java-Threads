@@ -21,9 +21,9 @@ public class Master extends Thread {
         int particiones = contador/num_hilos;
         int restantes = 0;
         
-        List<List<Float>> data = readfile.getData();
+        List<float[]> data = readfile.getData();
         
-        List<List<Float>> temp_data = data.subList(0,particiones);
+        List<float[]> temp_data = data.subList(0,particiones);
 
         Minions minions = new Minions(results, temp_data);
 

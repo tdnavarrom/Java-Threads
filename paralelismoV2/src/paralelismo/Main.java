@@ -38,7 +38,7 @@ public class Main {
 	public static void main(String[] args) throws InterruptedException {
 		Results results = new Results();
 		Reader readFile = new Reader("DAT_ASCII_EURUSD_M1_2017_2019.csv");
-		System.out.println("Press 1 to run secuencial, press 2 to run directly with threads, press 3 to run with master thread and slave threads, press 4 to use optimized threads: ");
+		System.out.println("Press 1 to run secuencial, press 2 to run directly with threads, press 3 to run with master thread and slave threads: ");
 		Scanner in = new Scanner(System.in); 
 	    int option = in.nextInt(); 
 	    
@@ -48,7 +48,7 @@ public class Main {
 
 			readFile.readFile();
 
-			List<float[]> data = readFile.getData();
+			List<List<Float>> data = readFile.getData();
 
 			System.out.print(data.size());
 
