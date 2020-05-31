@@ -2,26 +2,18 @@ import java.util.List;
 
 public class Minions extends Thread{
     
-    private List<List<String>> Stringdata;
+    private List<List<Float>> floatData;
 	private Results results;
 
-	public Minions( Results results, List<List<String>> Stringdata) {
+	public Minions( Results results, List<List<Float>> floatData) {
 		this.results = results;
-		this.Stringdata = Stringdata;
+		this.floatData = floatData;
 	}
 
 	public void run() {
 
-		
 
-		//System.out.println("Thread " + Thread.currentThread().getId() + " is running");
-
-		Converter converter = new Converter(Stringdata);
-		converter.convertToFloat();
-		List<List<Float>> data = converter.getList();
-
-
-		Evaluator evaluator = new Evaluator(data);
+		Evaluator evaluator = new Evaluator(floatData);
 
 		float[][] temp_precios = evaluator.ComparatorPrecio();
 

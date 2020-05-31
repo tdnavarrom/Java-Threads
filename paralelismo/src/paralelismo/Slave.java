@@ -40,13 +40,7 @@ public class Slave extends Thread{
 		//System.out.println(temp_cont * particiones);
 		//System.out.println(temp_end_of_range);
 		
-		List<List<String>> dataString = readFile.getData();
-		
-		//System.out.println ("Thread " + Thread.currentThread().getId() + " is running"); 
-
-		Converter converter = new Converter(dataString);
-		converter.convertToFloat();
-		List<List<Float>> data = converter.getList();
+		List<List<Float>> data = readFile.getData();
 
 		Evaluator evaluator = new Evaluator(data);
 

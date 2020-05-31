@@ -48,11 +48,7 @@ public class Main {
 
 			readFile.readFile();
 
-			List<List<String>> dataString = readFile.getData();
-
-			Converter converter = new Converter(dataString);
-			converter.convertToFloat();
-			List<List<Float>> data = converter.getList();
+			List<List<Float>> data = readFile.getData();
 
 			System.out.print(data.size());
 

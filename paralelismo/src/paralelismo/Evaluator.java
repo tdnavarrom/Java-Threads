@@ -31,6 +31,7 @@ public class Evaluator {
 
 		for (List<Float> list : this.mat) {
 			
+			
 
 			if (list.get(2) > result[0][0]) {
 				result[0][0] = list.get(2);

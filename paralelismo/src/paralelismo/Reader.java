@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Reader {
 	private String filename = null;
-	private List<List<String>> data = new ArrayList<>();
+	private List<List<Float>> data = new ArrayList<>();
 	private int contador = 0;
 
 	public Reader(String filename) {
@@ -43,12 +43,19 @@ public class Reader {
 
 		try (BufferedReader br = new BufferedReader(new FileReader(this.filename))) {
 			String line;
-
+			String[] values;
+			float[] floatData;
+			
 			for (int i = 0; i < end; i++) {
 				line = br.readLine();
 				if (i >= start && i < end && line != null) {
-					String[] values = line.split(";");
-					this.data.add(Arrays.asList(values));
+					values = line.split(";");
+					floatData = new float[values.length];
+					for(int j =0; j < values.length; j++ ){
+						floatData[j] = Float.parseFloat(values[j]);
+					}
+
+					this.data.add(Arrays.asList(floatData));
 				}
 			}
 
@@ -69,9 +76,15 @@ public class Reader {
 
 		try (BufferedReader br = new BufferedReader(new FileReader(this.filename))) {
 			String line;
+			float[] floatData;
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(";");
-				this.data.add(Arrays.asList(values));
+				floatData = new float[values.length];
+				for(int j =0; j < values.length; j++ ){
+					floatData[j] = Float.parseFloat(values[j]);
+				}
+					
+				this.data.add(Arrays.asList(floatData));
 				this.contador++;
 			}
 			br.close();
@@ -84,12 +97,7 @@ public class Reader {
 		}
 	}
 
-	public List<List<String>> getData() {
+	public List<List<Float>> getData() {
 		return this.data;
 	}
-
-	public int getContador(){
-		return this.contador;
-	}
-
 }
