@@ -9,7 +9,7 @@ public class Results {
 		this.results[row][col] = value;
 	}
 
-	public float[][] getResults(){
+	public float[][] getResults() {
 		return results;
 	}
 
