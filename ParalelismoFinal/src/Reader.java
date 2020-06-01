@@ -15,9 +15,14 @@ public class Reader {
 	private String filename = null;
 	private List<float[]> data = new ArrayList<>();
 	private int contador = 0;
+	private float[][] results = new float[2][4];
 
 	public Reader(String filename) {
 		this.filename = filename;
+		this.results[1][0] = Integer.MAX_VALUE;
+		this.results[1][1] = Integer.MAX_VALUE;
+		this.results[1][2] = Integer.MAX_VALUE;
+		this.results[1][3] = Integer.MAX_VALUE;
 	}
 
 	public int countNumLines() {
@@ -26,7 +31,6 @@ public class Reader {
 			while ((line = br.readLine()) != null) {
 				this.contador++;
 			}
-
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -38,26 +42,27 @@ public class Reader {
 		return this.contador;
 	}
 
-	public synchronized void readFile(int start, int end) {
+	public synchronized float[][] readFileSlaves(int start, int end) {
 
 		try (BufferedReader br = new BufferedReader(new FileReader(this.filename))) {
 			String line;
 			String[] values;
-			float[] floatData;
-			
+
 			for (int i = 0; i < end; i++) {
 				line = br.readLine();
 				if (i >= start && i < end && line != null) {
-					values = line.split(";");
-					floatData = new float[values.length];
-					for(int j =0; j < values.length; j++ ){
-						floatData[j] = Float.parseFloat(values[j]);
-					}
-
-					this.data.add(floatData);
+					values = Arrays.copyOfRange(line.split(";"), 2, 6);
+					results[0][0] = results[0][0] < Float.parseFloat(values[0])? Float.parseFloat(values[0]):results[0][0];
+					results[0][1] = results[0][1] < Float.parseFloat(values[1])? Float.parseFloat(values[1]):results[0][1];
+					results[0][2] = results[0][2] < Float.parseFloat(values[2])? Float.parseFloat(values[2]):results[0][2];
+					results[0][3] = results[0][3] < Float.parseFloat(values[3])? Float.parseFloat(values[3]):results[0][3];
+					results[1][0] = results[1][0] > Float.parseFloat(values[0])? Float.parseFloat(values[0]):results[1][0];
+					results[1][1] = results[1][1] > Float.parseFloat(values[1])? Float.parseFloat(values[1]):results[1][1];
+					results[1][2] = results[1][2] > Float.parseFloat(values[2])? Float.parseFloat(values[2]):results[1][2];
+					results[1][3] = results[1][3] > Float.parseFloat(values[3])? Float.parseFloat(values[3]):results[1][3];
+					//System.out.println(results[0][0]);
 				}
 			}
-
 			br.close();
 
 		} catch (FileNotFoundException e) {
@@ -69,10 +74,52 @@ public class Reader {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+		return results;
 	}
 
-	public void readFile() {
+	public float[][] readFileMain(){
 
+		try (BufferedReader br = new BufferedReader(new FileReader(this.filename))) {
+			String line;
+			String[] values;
+			float[] floatData;
+			boolean first = true;
+			while ((line = br.readLine()) != null) {
+				values = line.split(";");
+
+				values = Arrays.copyOfRange(values, 2, 6);
+				results[0][0] = results[0][0] < Float.parseFloat(values[0])? Float.parseFloat(values[0]):results[0][0];
+				results[0][1] = results[0][1] < Float.parseFloat(values[1])? Float.parseFloat(values[1]):results[0][1];
+				results[0][2] = results[0][2] < Float.parseFloat(values[2])? Float.parseFloat(values[2]):results[0][2];
+				results[0][3] = results[0][3] < Float.parseFloat(values[3])? Float.parseFloat(values[3]):results[0][3];
+				results[1][0] = results[1][0] > Float.parseFloat(values[0])? Float.parseFloat(values[0]):results[1][0];
+				results[1][1] = results[1][1] > Float.parseFloat(values[1])? Float.parseFloat(values[1]):results[1][1];
+				results[1][2] = results[1][2] > Float.parseFloat(values[2])? Float.parseFloat(values[2]):results[1][2];
+				results[1][3] = results[1][3] > Float.parseFloat(values[3])? Float.parseFloat(values[3]):results[1][3];
+
+			}
+
+		}catch(
+
+				FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch(
+				IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch(
+				Exception e)
+		{
+			System.out.println(e);
+		}return results;
+	}
+
+	public void readFileMaster() {
+
+		int count = 0;
 		try (BufferedReader br = new BufferedReader(new FileReader(this.filename))) {
 			String line;
 			float[] floatData;
@@ -84,7 +131,7 @@ public class Reader {
 				}
 
 				this.data.add(floatData);
-				this.contador++;
+				count++;
 			}
 			br.close();
 		} catch (FileNotFoundException e) {
@@ -94,13 +141,19 @@ public class Reader {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		this.contador = count;
 	}
 
 	public List<float[]> getData() {
-		return this.data;
+		return data;
 	}
 
-	public int getContador(){
+	public float[][] getResult() {
+		return this.results;
+	}
+
+	public int getContador() {
 		return this.contador;
 	}
 }

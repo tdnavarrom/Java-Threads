@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public class Master extends Thread {
 
     private Reader readfile;
-    private Results results;
+    private  Results results;
     private int num_hilos = 0;
-    
-    public Master(Reader readfile, Results results, int num_hilos) {
+
+    public Master(Reader readfile,Results results, int num_hilos) {
         this.readfile = readfile;
         this.results = results;
         this.num_hilos = num_hilos;
@@ -16,16 +16,18 @@ public class Master extends Thread {
 
     public void run(){
 
-        readfile.readFile();
+        readfile.readFileMaster();
         int contador = readfile.getContador();
         int particiones = contador/num_hilos;
         int restantes = 0;
-        
+        //System.out.println("Contador "+contador);
+        //System.out.println("Particiones "+particiones);
+
         List<float[]> data = readfile.getData();
         
         List<float[]> temp_data = data.subList(0,particiones);
 
-        Minions minions = new Minions(results, temp_data);
+        Minions minions = new Minions(results,temp_data);
 
         for (int i = 0; i < num_hilos; i++) {
 
@@ -38,7 +40,7 @@ public class Master extends Thread {
     			
     			//Sleep thread 32 to guarantee it is the last thread to join the main thread.
     			try {
-    				Thread.currentThread().sleep(2500);  //Do not use 1600ms by testing, 1500 is the perfect value.
+    				Thread.currentThread().sleep(10);  //Do not use 1600ms by testing, 1500 is the perfect value.
     			}
     			catch (Exception e) {
     				System.out.println(e);
@@ -52,7 +54,7 @@ public class Master extends Thread {
             temp_data.addAll(data.subList(start,temp_end_of_range));
             
             
-            minions = new Minions(results, temp_data);
+            minions = new Minions(results,temp_data);
             minions.start();
         
         }

@@ -38,50 +38,53 @@ public class Main {
 	public static void main(String[] args) throws InterruptedException {
 		Results results = new Results();
 		Reader readFile = new Reader("DAT_ASCII_EURUSD_M1_2017_2019.csv");
+		int contador = readFile.countNumLines();
 		System.out.println("Press 1 to run secuencial, press 2 to run directly with threads, press 3 to run with master thread and slave threads, press 4 to use optimized threads: ");
 		Scanner in = new Scanner(System.in); 
 	    int option = in.nextInt(); 
 	    
-	    long ini = System.currentTimeMillis();
+	    long ini;
 	    
 	    if (option == 1) {
 
-			readFile.readFile();
-
-			List<float[]> data = readFile.getData();
-
-			System.out.print(data.size());
-
-			Evaluator evaluator = new Evaluator(data);
-
-			float[][] temp_precios = evaluator.ComparatorPrecio();
-
-			for (int j = 0; j < 4; j++) {
-				results.update(0, j, temp_precios[0][j]);
-				results.update(1, j, temp_precios[1][j]);
-			}
+	    	System.out.println(contador);
+			ini = System.currentTimeMillis();
+			float[][] resultVals = readFile.readFileMain();
 			ini = System.currentTimeMillis() - ini;
 
+			System.out.println("Time: " + ini);
+			printResult(resultVals);
+
 		} else if (option == 2) {
-			
-			int contador = readFile.countNumLines();
+
 			int num_hilos = 20; 			
 			int particiones = contador / num_hilos; 			
 			int restantes = 0;
-			
-			Slave slave = new Slave(0, particiones, readFile, results, restantes); 			
-			for (int i = 0; i < num_hilos; i++) {
+
+			ini = System.currentTimeMillis();
+			Slave[] slaves = new Slave[num_hilos];
+			for(int i = 0; i < num_hilos; i++) {
 				
 				if(i == num_hilos-1) restantes = contador % num_hilos;
 				
-				slave = new Slave(i, particiones, readFile, results, restantes);	
+				Slave slave = new Slave(i, particiones, readFile, results, restantes);
+				slaves[i] = slave;
+				//slave.setPriority(Thread.MAX_PRIORITY);
 				slave.start();
 			}
-			
-			slave.join(); 			
+
+			for(int i = 0; i<slaves.length;++i){
+				if(slaves[i].isAlive()){
+					slaves[i].join();
+				}
+			}
 			ini = System.currentTimeMillis() - ini;
+
+			System.out.println("Time: " + ini);
+			printResult(readFile.getResult());
 			
 		} else if (option == 3) {
+			ini = System.currentTimeMillis();
 			int num_hilos = 20;
 
 			//
@@ -91,7 +94,11 @@ public class Main {
 			master.join();
 			ini = System.currentTimeMillis() - ini;
 
+			System.out.println("Time: " + ini);
+			printResult(results.getResults());
+
 		} else if(option == 4) {
+			ini = System.currentTimeMillis();
 			
 			int cores = Runtime.getRuntime().availableProcessors();
 			
@@ -104,9 +111,9 @@ public class Main {
 			master.start();
 			master.join();
 			ini = System.currentTimeMillis() - ini;
+
+			System.out.println("Time: " + ini);
+			printResult(results.getResults());
 		}
-		
-		System.out.println("Time: " + ini);
-		printResult(results.getResults());
 	}
 }
