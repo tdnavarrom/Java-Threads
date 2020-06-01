@@ -45,9 +45,11 @@ public class Master extends Thread {
             //else Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             int start = i * particiones;
 
-            for(int j = start; j<temp_end_of_range;j++) {
+            temp_data = Arrays.copyOfRange(data,start,temp_end_of_range).clone();
+
+            /*for(int j = start; j<temp_end_of_range;j++) {
                 temp_data[j - start] = data[j].clone();
-            }
+            }*/
             //System.out.println(temp_data.length);
 
             minions = new Minions(results,temp_data);
