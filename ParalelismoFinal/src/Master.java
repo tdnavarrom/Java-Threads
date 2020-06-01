@@ -20,8 +20,6 @@ public class Master extends Thread {
         int contador = readfile.getContador();
         int particiones = contador/num_hilos;
         int restantes = 0;
-        //System.out.println("Contador "+contador);
-        //System.out.println("Particiones "+particiones);
 
         List<float[]> data = readfile.getData();
         
@@ -34,19 +32,9 @@ public class Master extends Thread {
             int temp_end_of_range = (i + 1) * particiones;
             
             if( i == num_hilos-1) restantes = contador % num_hilos;
-            
-            if(restantes != 0) {
-    			temp_end_of_range = ((i + 1) * particiones) + restantes;
-    			
-    			//Sleep thread 32 to guarantee it is the last thread to join the main thread.
-    			try {
-    				Thread.currentThread().sleep(10);  //Do not use 1600ms by testing, 1500 is the perfect value.
-    			}
-    			catch (Exception e) {
-    				System.out.println(e);
-    			}
-    			
-    		}
+
+            if(restantes != 0) temp_end_of_range = ((i + 1) * particiones) + restantes;
+            else Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             
             temp_data = new ArrayList<>();
             int start = i * particiones;

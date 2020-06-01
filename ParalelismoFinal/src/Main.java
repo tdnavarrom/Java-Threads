@@ -39,7 +39,7 @@ public class Main {
 		Results results = new Results();
 		Reader readFile = new Reader("DAT_ASCII_EURUSD_M1_2017_2019.csv");
 		int contador = readFile.countNumLines();
-		System.out.println("Press 1 to run secuencial, press 2 to run directly with threads, press 3 to run with master thread and slave threads, press 4 to use optimized threads: ");
+		System.out.println("Press 1 to run secuential, press 2 to run directly with threads, press 3 to run with master thread and slave threads, press 4 to use optimized threads: ");
 		Scanner in = new Scanner(System.in); 
 	    int option = in.nextInt(); 
 	    
@@ -47,7 +47,6 @@ public class Main {
 	    
 	    if (option == 1) {
 
-	    	System.out.println(contador);
 			ini = System.currentTimeMillis();
 			float[][] resultVals = readFile.readFileMain();
 			ini = System.currentTimeMillis() - ini;
@@ -87,8 +86,6 @@ public class Main {
 			ini = System.currentTimeMillis();
 			int num_hilos = 20;
 
-			//
-
 			Master master = new Master(readFile, results, num_hilos);
 			master.start();
 			master.join();
@@ -103,8 +100,6 @@ public class Main {
 			int cores = Runtime.getRuntime().availableProcessors();
 			
 			int num_hilos = cores*2;
-			
-			//System.out.println(num_hilos);
 
 
 			Master master = new Master(readFile, results,  num_hilos);

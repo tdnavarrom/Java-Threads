@@ -82,8 +82,6 @@ public class Reader {
 		try (BufferedReader br = new BufferedReader(new FileReader(this.filename))) {
 			String line;
 			String[] values;
-			float[] floatData;
-			boolean first = true;
 			while ((line = br.readLine()) != null) {
 				values = line.split(";");
 
