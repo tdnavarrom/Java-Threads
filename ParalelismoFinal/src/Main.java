@@ -100,8 +100,6 @@ public class Main {
 			int cores = Runtime.getRuntime().availableProcessors();
 			
 			int num_hilos = cores*2;
-
-
 			Master master = new Master(readFile, results,  num_hilos);
 			master.start();
 			master.join();
