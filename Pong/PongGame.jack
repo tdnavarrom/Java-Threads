@@ -10,7 +10,6 @@ class PongGame {
 
     static PongGame instance; // the singelton, a Pong game instance     
     field Bat bat;            // the bat
-    field Ball ball;          // the ball
     field int wall;           // the current wall that the ball is bouncing off of.
     field boolean exit;       // true when the game is over
     field int score;          // the current score.
@@ -24,7 +23,6 @@ class PongGame {
 	    do Screen.clearScreen();
         let batWidth = 50;  // initial bat size
         let bat = Bat.new(230, 229, batWidth, 7);
-        let ball = Ball.new(253, 222, 0, 511, 0, 229);
         do ball.setDestination(400,0);
         do Screen.drawRectangle(0, 238, 511, 240);
 	    do Output.moveCursor(22,0);
@@ -33,7 +31,6 @@ class PongGame {
 	    let exit = false;
 	    let score = 0;
 	    let wall = 0;
-	    let lastWall = 0;
 
         return this;
     }
@@ -100,10 +97,8 @@ class PongGame {
      * Handles ball movement, including bouncing.
      * If the ball bounces off a wall, finds its new direction.
      * If the ball bounces off the bat, increases the score by one
-     * and shrinks the bat's size, to make the game more challenging. 
      */
     method void moveBall() {
-        var int bouncingDirection, batLeft, batRight, ballLeft, ballRight;
 
         let wall = ball.move();
 
@@ -122,9 +117,7 @@ class PongGame {
                     else {
                         if (ballLeft > (batRight - 10)) { let bouncingDirection = 1; }
                     }
-
-                    let batWidth = batWidth - 2;
-                    do bat.setWidth(batWidth);      
+ 
                     let score = score + 1;
                     do Output.moveCursor(22,7);
                     do Output.printInt(score);
