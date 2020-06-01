@@ -112,7 +112,8 @@ public class Reader {
 				Exception e)
 		{
 			System.out.println(e);
-		}return results;
+		}
+		return results;
 	}
 
 	public void readFileMaster() {
