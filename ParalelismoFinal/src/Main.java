@@ -36,8 +36,11 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws InterruptedException {
+
+		String filename = args[0];
 		Results results = new Results();
-		Reader readFile = new Reader("DAT_ASCII_EURUSD_M1_2017_2019.csv");
+		Reader readFile = new Reader(filename);
+
 		int contador = readFile.countNumLines();
 		System.out.println("Press 1 to run secuential, press 2 to run directly with threads, press 3 to run with master thread and slave threads, press 4 to use optimized threads: ");
 		Scanner in = new Scanner(System.in);
