@@ -23,7 +23,6 @@ public class Slave extends Thread{
 
 		if(restantes != 0) temp_end_of_range = ((temp_cont + 1) * particiones) + restantes;
 		else Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-
 		readFile.readFileSlaves(temp_cont * particiones, temp_end_of_range); // begin , end of thread
 
 		//System.out.println ("Thread " + Thread.currentThread().getId() + " is finished");

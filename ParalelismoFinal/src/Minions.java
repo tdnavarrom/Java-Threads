@@ -2,10 +2,10 @@ import java.util.List;
 
 public class Minions extends Thread{
     
-    private List<float[]> floatData;
+    private float[][] floatData;
 	private Results results;
 
-	public Minions(Results results,  List<float[]> floatData) {
+	public Minions(Results results,  float[][] floatData) {
 		this.results = results;
 		this.floatData = floatData;
 	}
@@ -16,7 +16,6 @@ public class Minions extends Thread{
 		Evaluator evaluator = new Evaluator(floatData);
 
 		float[][] temp_precios = evaluator.ComparatorPrecio();
-
 
 
 		for (int j = 0; j < 4; j++) {

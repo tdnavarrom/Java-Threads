@@ -14,6 +14,7 @@ import java.util.List;
 public class Reader {
 	private String filename = null;
 	private List<float[]> data = new ArrayList<>();
+	private float[][] dataMaster;
 	private int contador = 0;
 	private float[][] results = new float[2][4];
 
@@ -118,18 +119,17 @@ public class Reader {
 
 	public void readFileMaster() {
 
+		dataMaster = new float[this.contador][4];
 		int count = 0;
 		try (BufferedReader br = new BufferedReader(new FileReader(this.filename))) {
 			String line;
-			float[] floatData;
 			while ((line = br.readLine()) != null) {
 				String[] values = line.split(";");
-				floatData = new float[values.length];
-				for(int j =0; j < values.length; j++ ){
-					floatData[j] = Float.parseFloat(values[j]);
+				for(int j =2; j < values.length-1; j++){
+					dataMaster[count][j-2] = Float.parseFloat(values[j]);
 				}
 
-				this.data.add(floatData);
+				//this.data.add(floatData);
 				count++;
 			}
 			br.close();
@@ -146,6 +146,10 @@ public class Reader {
 
 	public List<float[]> getData() {
 		return data;
+	}
+
+	public float[][] getDataMaster() {
+		return dataMaster;
 	}
 
 	public float[][] getResult() {
